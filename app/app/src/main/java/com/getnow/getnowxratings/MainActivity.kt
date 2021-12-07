@@ -1,10 +1,8 @@
 package com.getnow.getnowxratings
 
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
@@ -14,6 +12,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -42,13 +41,17 @@ class MainActivity : ComponentActivity() {
                             )
                         },
                         bottomBar = {
-                            BottomAppBar(Modifier.fillMaxWidth(), backgroundColor = Color(ContextCompat.getColor(this, R.color.getnowgreen)), contentColor = Color.White) {
-                                val navs = listOf<Navs>(Navs.Monsters, Navs.Quotes, Navs.SandwichShop, Navs.Sneeze, Navs.Tales)
-                                navs.forEach() {
+                            BottomAppBar(
+                                Modifier.fillMaxWidth(),
+                                backgroundColor = Color(ContextCompat.getColor(this, R.color.getnowgreen)),
+                                contentColor = Color.White) {
+                                val navs = listOf(Navs.Monsters, Navs.Quotes, Navs.SandwichShop, Navs.Sneeze, Navs.Tales)
+
+                                navs.forEach {
                                     BottomNavigationItem(
                                         selected = false,
                                         onClick = { /*TODO*/ },
-                                        icon = { Icon(Icons.Filled.Menu, contentDescription = null)}
+                                        icon = { Icon(painter = painterResource(id = it.icon), contentDescription = it.title, modifier = Modifier.size(30.dp)) }
                                     )
                                 }
                             }
