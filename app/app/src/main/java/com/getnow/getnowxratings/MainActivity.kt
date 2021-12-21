@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -18,6 +20,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.getnow.getnowxratings.ui.theme.GetnowXRatingsTheme
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,21 +43,28 @@ fun AppMain() {
     var currRoute by remember {
         mutableStateOf(Navs.Monsters.routeName)
     }
+    val scaffoldState = rememberScaffoldState()
+    val scope = rememberCoroutineScope()
     val navs = listOf(Navs.Monsters, Navs.Quotes, Navs.SandwichShop, Navs.Sneeze, Navs.Tales)
-
     Scaffold(
         Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
                 modifier = Modifier.fillMaxWidth(),
                 title = { Text(text = "GetnowX - Ratings") },
-                actions = {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(Icons.Filled.Menu, contentDescription = "MENU", modifier = Modifier.size(40.dp))
-                    }
-                },
                 backgroundColor = Color(LocalContext.current.getColor(R.color.getnowgreen)),
-                contentColor = Color.White
+                contentColor = Color.White,
+                navigationIcon = {
+                    IconButton(onClick = { scope.launch {
+                        scaffoldState.drawerState.open()
+                    } }) {
+                        if (scaffoldState.drawerState.isOpen) {
+                            Icon(Icons.Filled.Close, contentDescription = "Close", modifier = Modifier.size(40.dp))
+                        } else {
+                            Icon(Icons.Filled.Menu, contentDescription = "MENU", modifier = Modifier.size(40.dp))
+                        }
+                    }
+                }
             )
         },
         bottomBar = {
@@ -70,7 +80,18 @@ fun AppMain() {
                     )
                 }
             }
-        }
+        },
+        drawerContent = {
+            Column(Modifier.fillMaxSize()) {
+                Text(text = "DUPA")
+            }
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = { println("floating button has been clicked") }) {
+                Icon(Icons.Filled.Edit, contentDescription = "menu")
+            }
+        },
+        scaffoldState = scaffoldState
     ) {
         Box(modifier = Modifier
             .fillMaxSize()
